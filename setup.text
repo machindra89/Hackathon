@@ -1,0 +1,70 @@
+Running interconnected Python programs in an Azure Function App involves a few steps. Here's a general guide to help you get started:
+
+### 1. **Set Up Your Environment**
+- **Azure Account**: Ensure you have an active Azure subscription.
+- **Python**: Install a supported version of Python. Azure Functions supports Python 3.6, 3.7, 3.8, and 3.9.
+- **Visual Studio Code**: Install Visual Studio Code along with the Azure Functions and Python extensions.
+
+### 2. **Create a New Azure Functions Project**
+1. **Open Visual Studio Code**.
+2. **Install Azure Functions Core Tools**: This allows you to run and debug your functions locally.
+3. **Create a New Project**:
+   - Open the command palette (`F1`), search for `Azure Functions: Create New Project...`, and follow the prompts to set up your project.
+   - Choose Python as the language and select a template for your function (e.g., HTTP trigger).
+
+### 3. **Add Your Python Programs**
+- Place your Python scripts in the project directory. Ensure they are properly interconnected and can be called from the main function.
+- Modify the `__init__.py` file to include your logic. For example:
+
+```python
+import azure.functions as func
+
+def main(req: func.HttpRequest) -> func.HttpResponse:
+    # Call your interconnected Python programs here
+    result = your_function()
+    return func.HttpResponse(f"Result: {result}", status_code=200)
+```
+
+### 4. **Configure Function Bindings**
+- Define your function bindings in the `function.json` file. This file specifies how your function is triggered and what data it processes.
+
+```json
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "authLevel": "function",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": ["get", "post"]
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "$return"
+    }
+  ]
+}
+```
+
+### 5. **Test Locally**
+- Use the Azure Functions Core Tools to run your function locally and ensure everything works as expected.
+
+### 6. **Deploy to Azure**
+1. **Sign in to Azure**: Use the Azure Functions extension in Visual Studio Code to sign in to your Azure account.
+2. **Deploy**: Right-click on your project and select `Deploy to Function App...`. Follow the prompts to deploy your function to Azure.
+
+### 7. **Monitor and Manage**
+- Use the Azure portal to monitor the performance and logs of your function app.
+
+For more detailed instructions, you can refer to the [Azure Functions Python developer guide](https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference-python)¹ and the [quickstart guide for creating a Python function using Visual Studio Code](https://learn.microsoft.com/en-us/azure/azure-functions/create-first-function-vs-code-python)².
+
+If you have any specific questions or run into issues, feel free to ask!
+
+Source: Conversation with Copilot, 18/07/2024
+(1) Python developer reference for Azure Functions | Microsoft Learn. https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference-python.
+(2) Create a Python function using Visual Studio Code - Azure Functions .... https://learn.microsoft.com/en-us/azure/azure-functions/create-first-function-vs-code-python.
+(3) Getting started with hosting Python apps on Azure - Python on Azure. https://learn.microsoft.com/en-us/azure/developer/python/quickstarts-app-hosting.
+(4) Azure Functions: V2 Python Programming Model is Generally Available. https://techcommunity.microsoft.com/t5/azure-compute-blog/azure-functions-v2-python-programming-model-is-generally/ba-p/3827474.
+(5) Python Script to Azure App: A Step-by-Step Guide - Part 1. https://www.bluedialog.com/post/creating-a-python-script-and-azure-function-app-your-step-by-step-guide-part-1.
